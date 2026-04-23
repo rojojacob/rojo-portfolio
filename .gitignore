@@ -17,3 +17,4 @@ Icon
 .tmp/
 node_modules/
 dist/
+merge-to-main.sh
