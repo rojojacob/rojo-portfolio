@@ -6272,25 +6272,81 @@
     });
   }
 
-  /* ============ TEXT SCRAMBLE ============ */
+  /* ============ HEADLINE REVEAL ============
+     Replaces the old scramble effect with a smooth word-by-word reveal:
+     each word is wrapped in a span, then translateY + opacity animate in
+     with a staggered ease. Italic <em> words are kept intact so the
+     gradient fill + magnetic-char pipeline can still run after reveal. */
   function scrambleText() {
     const h1 = document.querySelector('.hero h1');
-    const original = h1.innerHTML;
-    const plain = h1.innerText;
-    const chars = '!<>-_\\/[]{}—=+*^?#';
-    let i = 0;
-    h1.innerText = '';
-    const interval = setInterval(() => {
-      let out = '';
-      for (let j = 0; j < plain.length; j++) {
-        if (j < i) out += plain[j];
-        else if (plain[j] === ' ' || plain[j] === '\n') out += plain[j];
-        else out += chars[Math.floor(Math.random() * chars.length)];
+    const inner = h1.querySelector('#heroTitle');
+    if (!inner) return;
+    // Cache the original and temporarily swap for reveal-friendly markup
+    const original = inner.innerHTML;
+    // Tokenize, preserving <br/> and italic <em>...</em> words as units
+    const tmp = document.createElement('div');
+    tmp.innerHTML = original;
+    const frag = document.createDocumentFragment();
+    const animTargets = [];
+    function processNode(node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        // Split text on whitespace, wrap each word
+        const text = node.textContent;
+        text.split(/(\s+)/).forEach(piece => {
+          if (!piece) return;
+          if (/^\s+$/.test(piece)) {
+            frag.appendChild(document.createTextNode(piece));
+          } else {
+            const w = document.createElement('span');
+            w.className = 'hero-word';
+            w.textContent = piece;
+            frag.appendChild(w);
+            animTargets.push(w);
+          }
+        });
+      } else if (node.tagName === 'BR') {
+        frag.appendChild(document.createElement('br'));
+      } else if (node.tagName === 'EM') {
+        // Preserve <em> as an animation unit (keeps gradient fill intact)
+        const em = node.cloneNode(true);
+        em.classList.add('hero-word');
+        frag.appendChild(em);
+        animTargets.push(em);
+      } else {
+        // Unknown node: recurse
+        Array.from(node.childNodes).forEach(processNode);
       }
-      h1.innerText = out;
-      i += 1.8;
-      if (i >= plain.length) { clearInterval(interval); h1.innerHTML = original; wrapMagneticChars(); }
-    }, 30);
+    }
+    Array.from(tmp.childNodes).forEach(processNode);
+
+    // Swap inner content
+    inner.innerHTML = '';
+    inner.appendChild(frag);
+
+    // Styling for the reveal (applied via inline styles so we don't fight CSS)
+    animTargets.forEach(el => {
+      el.style.display = 'inline-block';
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(0.45em)';
+      el.style.filter = 'blur(6px)';
+      el.style.willChange = 'transform, opacity, filter';
+    });
+
+    // GSAP stagger: each word rises + unblurs, with a gentle overlap.
+    gsap.to(animTargets, {
+      opacity: 1,
+      y: 0,
+      filter: 'blur(0px)',
+      duration: 0.85,
+      ease: 'power3.out',
+      stagger: 0.07,
+      onComplete: () => {
+        // Restore original HTML so downstream code (magnetic chars, scramble)
+        // sees the canonical markup. clearProps on the way out.
+        inner.innerHTML = original;
+        wrapMagneticChars();
+      }
+    });
   }
 
   /* ============ MAGNETIC CHARS ============ */
