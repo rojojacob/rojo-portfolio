@@ -4,14 +4,23 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Rojo Jacob · Associate Team Lead · iOS Developer</title>
-<meta name="description" content="Senior iOS Developer Portfolio · 5 years · Swift, SwiftUI, UIKit."/>
+<meta name="description" content="Rojo Jacob · Associate Team Lead &amp; Senior iOS Developer · 4+ years shipping Swift, SwiftUI, UIKit apps, #1-ranked in the GCC."/>
+<meta name="theme-color" content="#05060A"/>
+<link rel="icon" type="image/png" href="assets/rojo-portrait.png"/>
 
-<!-- Fonts -->
+<!-- Preconnect to speed up the handshake for first-paint resources -->
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
-<!-- Libraries -->
+<!-- Libraries. Loaded synchronously so the inline init script at the end of
+     the body can reference gsap/ScrollTrigger/Lenis immediately on parse. -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js"></script>
@@ -958,6 +967,25 @@
 
   /* PREVIEW BANNER */
 
+  /* ========== REDUCED MOTION ========== */
+  @media (prefers-reduced-motion: reduce) {
+    /* Aggressively cut animation + transition durations to near-zero so
+       users with vestibular sensitivity aren't blasted by motion.
+       Keeps the design readable and functional — just without the flair. */
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    /* Still hide elements that relied on keyframe reveals so they show in
+       their final state immediately. */
+    .orbit, .auraPulse, .rimSpin, .filterPulse, .pulse, .blink,
+    .marquee-inner { animation: none !important; }
+    /* Lenis smooth scroll — disable by forcing native scroll */
+    html { scroll-behavior: auto !important; }
+  }
+
   /* ========== RESPONSIVE: TABLET ≤ 980px ========== */
   @media (max-width: 980px) {
     html, body { overflow-x: hidden; cursor: auto; }
@@ -1084,6 +1112,16 @@
     .section-title { font-size: clamp(2rem, 8vw, 3.2rem); }
 
     .t-bar em { font-size: 0.65rem; }
+
+    /* Backdrop-filter perf optimisations for mobile GPUs.
+       The 22px blurs on project cards, terminal, and testimonial panels
+       are the heaviest cost during scroll on mid/low-tier Android.
+       Dropping to 10-12px cuts GPU time per frame dramatically with
+       no meaningful visual change at phone screen sizes. */
+    .proj-card { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+    .terminal-wrap { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    .tslide { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    nav.top { backdrop-filter: blur(14px) saturate(130%); -webkit-backdrop-filter: blur(14px) saturate(130%); }
   }
 
   /* ========== RESPONSIVE: SMALL MOBILE ≤ 430px ========== */
@@ -1334,7 +1372,10 @@
     <div class="portrait-wrap">
       <div class="portrait-aura"></div>
       <div class="portrait-rim"></div>
-      <img class="portrait-img" src="assets/rojo-portrait.png" alt="Rojo Jacob, iOS developer, holding phone" draggable="false"/>
+      <picture>
+        <source srcset="assets/rojo-portrait.webp" type="image/webp"/>
+        <img class="portrait-img" src="assets/rojo-portrait.png" alt="Rojo Jacob, iOS developer, holding phone" draggable="false" fetchpriority="high" decoding="async"/>
+      </picture>
       <!-- Phone screen flash behind the image's phone -->
       <div class="phone-flash" id="phoneFlash"></div>
       <!-- Energy lines from phone to each icon are drawn here as SVG -->
@@ -1350,56 +1391,56 @@
              data-tags="WebSocket · CarPlay · Voice AI"
              data-target="#work"
              data-logo="caribou">
-          <img src="https://play-lh.googleusercontent.com/9fk_-igm_bpaH119i5AxbgL-CEzd-iJqiA9Z0_vQs6FMqKkM8aak1b9fCum_bTRNZ24" alt="Caribou Coffee" onerror="this.style.display='none'; this.parentNode.classList.add('logo-fallback'); this.parentNode.dataset.fallback='Caribou';"/>
+          <img decoding="async" src="assets/icons/caribou.webp" alt="Caribou Coffee" onerror="this.style.display='none'; this.parentNode.classList.add('logo-fallback'); this.parentNode.dataset.fallback='Caribou';"/>
         </div>
         <div class="app-icon" data-hover
              data-name="LuLu · GCC & India E-commerce"
              data-tags="Localization · Performance"
              data-target="#work"
              data-logo="lulu">
-          <img src="https://gcc.luluhypermarket.com/akn-logo-english.svg" alt="LuLu" onerror="this.style.display='none'; this.parentNode.classList.add('logo-fallback'); this.parentNode.dataset.fallback='LuLu';"/>
+          <img decoding="async" src="assets/icons/lulu.svg" alt="LuLu" onerror="this.style.display='none'; this.parentNode.classList.add('logo-fallback'); this.parentNode.dataset.fallback='LuLu';"/>
         </div>
         <div class="app-icon" data-hover
              data-name="Jumbo Souq · Qatar E-commerce"
              data-tags="Flutter Module · Live Tracking"
              data-target="#work"
              data-logo="jumbo">
-          <img src="https://jumbosouq.com/assets/images/js-qa.svg" alt="Jumbo Souq" onerror="this.style.display='none'; this.parentNode.classList.add('logo-fallback'); this.parentNode.dataset.fallback='Jumbo';"/>
+          <img decoding="async" src="assets/icons/jumbo.svg" alt="Jumbo Souq" onerror="this.style.display='none'; this.parentNode.classList.add('logo-fallback'); this.parentNode.dataset.fallback='Jumbo';"/>
         </div>
         <div class="app-icon" data-hover
              data-name="Social Cash · UAE"
              data-tags="Creator payouts · Campaigns"
              data-target="#work"
              data-logo="socialcash">
-          <img src="https://socialcash.ae/assets/img/socialcash-logo.png" alt="Social Cash" onerror="this.style.display='none'; this.parentNode.classList.add('logo-fallback'); this.parentNode.dataset.fallback='S. Cash';"/>
+          <img decoding="async" src="assets/icons/socialcash.png" alt="Social Cash" onerror="this.style.display='none'; this.parentNode.classList.add('logo-fallback'); this.parentNode.dataset.fallback='S. Cash';"/>
         </div>
         <div class="app-icon" data-hover
              data-name="Fed Mobile · Federal Bank"
              data-tags="1M+ downloads · Fintech"
              data-target="#work"
              data-logo="fedbank">
-          <img src="https://www.federal.bank.in/o/federal-bank-theme/images/logo.svg" alt="Federal Bank" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_R899AfRkp0rExChkniGS6nepb2TwyRockg&amp;s'; this.onerror=()=>{this.style.display='none'; this.parentNode.classList.add('logo-fallback'); this.parentNode.dataset.fallback='Fed Bank';};"/>
+          <img src="assets/icons/fedbank.svg" alt="Federal Bank" onerror="this.src='assets/icons/fedbank.svg'; this.onerror=()=>{this.style.display='none'; this.parentNode.classList.add('logo-fallback'); this.parentNode.dataset.fallback='Fed Bank';};"/>
         </div>
         <div class="app-icon" data-hover
              data-name="Joyalukkas"
              data-tags="Jewelry · Retail"
              data-target="#work"
              data-logo="joyalukkas">
-          <img src="https://cdn.joyalukkas.in/media/jas-assets/static/logo.png" alt="Joyalukkas" onerror="this.style.display='none'; this.parentNode.classList.add('logo-fallback'); this.parentNode.dataset.fallback='Joy';"/>
+          <img decoding="async" src="assets/icons/joyalukkas.png" alt="Joyalukkas" onerror="this.style.display='none'; this.parentNode.classList.add('logo-fallback'); this.parentNode.dataset.fallback='Joy';"/>
         </div>
         <div class="app-icon" data-hover
              data-name="Yalla Toys"
              data-tags="Kids · Retail"
              data-target="#work"
              data-logo="yallatoys">
-          <img src="https://cdn.shopify.com/s/files/1/0682/3480/5419/files/Yallatoys__logo_a8bf6ce4-6f38-418f-b93d-8caf5ab68398.svg" alt="Yalla Toys" onerror="this.style.display='none'; this.parentNode.classList.add('logo-fallback'); this.parentNode.dataset.fallback='Yalla';"/>
+          <img decoding="async" src="assets/icons/yallatoys.svg" alt="Yalla Toys" onerror="this.style.display='none'; this.parentNode.classList.add('logo-fallback'); this.parentNode.dataset.fallback='Yalla';"/>
         </div>
         <div class="app-icon" data-hover
              data-name="Caribou Coffee · Kuwait"
              data-tags="#1 Food &amp; Drink · Kuwait"
              data-target="#work"
              data-logo="caribou2">
-          <img src="https://play-lh.googleusercontent.com/9fk_-igm_bpaH119i5AxbgL-CEzd-iJqiA9Z0_vQs6FMqKkM8aak1b9fCum_bTRNZ24" alt="Caribou Coffee Kuwait" onerror="this.style.display='none'; this.parentNode.classList.add('logo-fallback'); this.parentNode.dataset.fallback='Caribou KW';"/>
+          <img decoding="async" src="assets/icons/caribou.webp" alt="Caribou Coffee Kuwait" onerror="this.style.display='none'; this.parentNode.classList.add('logo-fallback'); this.parentNode.dataset.fallback='Caribou KW';"/>
         </div>
       </div>
       <div class="app-tooltip" id="appTooltip" role="tooltip" aria-hidden="true">
@@ -5815,7 +5856,7 @@
 
               <!-- ===== 5 App rows ===== -->
               <!-- Row 1: Yalla Toys -->
-              <g><rect x="16" y="100" width="52" height="52" rx="12" fill="#1c1c1e"/><image href="https://cdn.shopify.com/s/files/1/0682/3480/5419/files/Yallatoys__logo_a8bf6ce4-6f38-418f-b93d-8caf5ab68398.svg" x="16" y="100" width="52" height="52" preserveAspectRatio="xMidYMid slice" clip-path="url(#others-icclip1)"/><rect x="16" y="100" width="52" height="52" rx="12" fill="none" stroke="#2a2a2a" stroke-width="0.5"/></g>
+              <g><rect x="16" y="100" width="52" height="52" rx="12" fill="#1c1c1e"/><image href="assets/icons/yallatoys.svg" x="16" y="100" width="52" height="52" preserveAspectRatio="xMidYMid slice" clip-path="url(#others-icclip1)"/><rect x="16" y="100" width="52" height="52" rx="12" fill="none" stroke="#2a2a2a" stroke-width="0.5"/></g>
               <text x="80" y="122" fill="#ffffff" font-family="-apple-system,system-ui,sans-serif" font-size="15" font-weight="600">Yalla Toys</text>
               <text x="80" y="140" fill="#999999" font-family="-apple-system,system-ui,sans-serif" font-size="12">Kids Toys &amp; Games Store</text>
               <rect x="272" y="115" width="52" height="26" rx="13" fill="#1c1c1e"/>
@@ -5824,7 +5865,7 @@
               <line x1="80" y1="162" x2="328" y2="162" stroke="#2a2a2a" stroke-width="0.6"/>
 
               <!-- Row 2: Joyalukkas -->
-              <g><rect x="16" y="172" width="52" height="52" rx="12" fill="#1c1c1e"/><image href="https://cdn.joyalukkas.in/media/jas-assets/static/logo.png" x="16" y="172" width="52" height="52" preserveAspectRatio="xMidYMid slice" clip-path="url(#others-icclip2)"/><rect x="16" y="172" width="52" height="52" rx="12" fill="none" stroke="#2a2a2a" stroke-width="0.5"/></g>
+              <g><rect x="16" y="172" width="52" height="52" rx="12" fill="#1c1c1e"/><image href="assets/icons/joyalukkas.png" x="16" y="172" width="52" height="52" preserveAspectRatio="xMidYMid slice" clip-path="url(#others-icclip2)"/><rect x="16" y="172" width="52" height="52" rx="12" fill="none" stroke="#2a2a2a" stroke-width="0.5"/></g>
               <text x="80" y="194" fill="#ffffff" font-family="-apple-system,system-ui,sans-serif" font-size="15" font-weight="600">Joyalukkas</text>
               <text x="80" y="212" fill="#999999" font-family="-apple-system,system-ui,sans-serif" font-size="12">Fine Jewellery &amp; Gold</text>
               <rect x="272" y="187" width="52" height="26" rx="13" fill="#1c1c1e"/>
@@ -5833,7 +5874,7 @@
               <line x1="80" y1="234" x2="328" y2="234" stroke="#2a2a2a" stroke-width="0.6"/>
 
               <!-- Row 3: Radio Mango -->
-              <g><rect x="16" y="244" width="52" height="52" rx="12" fill="#1c1c1e"/><image href="https://play-lh.googleusercontent.com/C4CDQxHBrye_lPTAqkevkeUDuYfIsaZ6F7nFt11yqVFhq7FTTQoJf7n1eBmLk9ziHOw" x="16" y="244" width="52" height="52" preserveAspectRatio="xMidYMid slice" clip-path="url(#others-icclip3)"/><rect x="16" y="244" width="52" height="52" rx="12" fill="none" stroke="#2a2a2a" stroke-width="0.5"/></g>
+              <g><rect x="16" y="244" width="52" height="52" rx="12" fill="#1c1c1e"/><image href="assets/icons/radio-mango.png" x="16" y="244" width="52" height="52" preserveAspectRatio="xMidYMid slice" clip-path="url(#others-icclip3)"/><rect x="16" y="244" width="52" height="52" rx="12" fill="none" stroke="#2a2a2a" stroke-width="0.5"/></g>
               <text x="80" y="266" fill="#ffffff" font-family="-apple-system,system-ui,sans-serif" font-size="15" font-weight="600">Radio Mango</text>
               <text x="80" y="284" fill="#999999" font-family="-apple-system,system-ui,sans-serif" font-size="12">Live Radio &amp; Podcasts</text>
               <rect x="272" y="259" width="52" height="26" rx="13" fill="#1c1c1e"/>
@@ -5842,7 +5883,7 @@
               <line x1="80" y1="306" x2="328" y2="306" stroke="#2a2a2a" stroke-width="0.6"/>
 
               <!-- Row 4: oloppo -->
-              <g><rect x="16" y="316" width="52" height="52" rx="12" fill="#1c1c1e"/><image href="https://play-lh.googleusercontent.com/g7BugMPsrXlBgD55_GChYktDqCgq9DOi0ojdCkQcJNE7-ivsEpZzrr51gglY2h5djnE=w480-h960-rw" x="16" y="316" width="52" height="52" preserveAspectRatio="xMidYMid slice" clip-path="url(#others-icclip4)"/><rect x="16" y="316" width="52" height="52" rx="12" fill="none" stroke="#2a2a2a" stroke-width="0.5"/></g>
+              <g><rect x="16" y="316" width="52" height="52" rx="12" fill="#1c1c1e"/><image href="assets/icons/oloppo.png" x="16" y="316" width="52" height="52" preserveAspectRatio="xMidYMid slice" clip-path="url(#others-icclip4)"/><rect x="16" y="316" width="52" height="52" rx="12" fill="none" stroke="#2a2a2a" stroke-width="0.5"/></g>
               <text x="80" y="338" fill="#ffffff" font-family="-apple-system,system-ui,sans-serif" font-size="15" font-weight="600">oloppo</text>
               <text x="80" y="356" fill="#999999" font-family="-apple-system,system-ui,sans-serif" font-size="12">Food &amp; Grocery Delivery</text>
               <rect x="272" y="331" width="52" height="26" rx="13" fill="#1c1c1e"/>
@@ -5851,7 +5892,7 @@
               <line x1="80" y1="378" x2="328" y2="378" stroke="#2a2a2a" stroke-width="0.6"/>
 
               <!-- Row 5: B-Fab -->
-              <g><rect x="16" y="388" width="52" height="52" rx="12" fill="#1c1c1e"/><image href="https://play-lh.googleusercontent.com/wGyTW3KJh0vOEX_2-tqlZWLj5cO_oAKZy1cE8tCQjRKImVFJ1kbTuyt5T3QiLWSDg8m3LFB9ZuFVeMAyKOw8=w480-h960-rw" x="16" y="388" width="52" height="52" preserveAspectRatio="xMidYMid slice" clip-path="url(#others-icclip5)"/><rect x="16" y="388" width="52" height="52" rx="12" fill="none" stroke="#2a2a2a" stroke-width="0.5"/></g>
+              <g><rect x="16" y="388" width="52" height="52" rx="12" fill="#1c1c1e"/><image href="assets/icons/b-fab.png" x="16" y="388" width="52" height="52" preserveAspectRatio="xMidYMid slice" clip-path="url(#others-icclip5)"/><rect x="16" y="388" width="52" height="52" rx="12" fill="none" stroke="#2a2a2a" stroke-width="0.5"/></g>
               <text x="80" y="410" fill="#ffffff" font-family="-apple-system,system-ui,sans-serif" font-size="15" font-weight="600">B-Fab</text>
               <text x="80" y="428" fill="#999999" font-family="-apple-system,system-ui,sans-serif" font-size="12">Beauty &amp; Fashion</text>
               <rect x="272" y="403" width="52" height="26" rx="13" fill="#1c1c1e"/>
@@ -6133,6 +6174,12 @@
 <div class="toast" id="toast"><span class="t-ic">✓</span><span id="toastMsg">Ready.</span></div>
 
 <script>
+  /* ============ REDUCED MOTION GUARD ============
+     Honor the OS-level "Reduce Motion" accessibility setting. When set, we
+     skip the scramble/reveal, stop auto-rotating testimonials, skip the
+     terminal typing animation, and simplify the hero icon burst.  */
+  const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   /* ============ CUSTOM CURSOR + TRAIL ============ */
   const dot = document.getElementById('cursorDot');
   const ring = document.getElementById('cursorRing');
@@ -6281,6 +6328,9 @@
     const h1 = document.querySelector('.hero h1');
     const inner = h1.querySelector('#heroTitle');
     if (!inner) return;
+    // If the user prefers reduced motion, skip the reveal entirely
+    // and just wrap magnetic chars so hover effects still work.
+    if (prefersReduced) { wrapMagneticChars(); return; }
     // Cache the original and temporarily swap for reveal-friendly markup
     const original = inner.innerHTML;
     // Tokenize, preserving <br/> and italic <em>...</em> words as units
@@ -6729,8 +6779,9 @@
       }
     }
     pcx.globalAlpha = 1;
-    requestAnimationFrame(drawParticles);
+    if (!prefersReduced) requestAnimationFrame(drawParticles);
   }
+  // Draw once; continuous redraws only if motion is OK
   drawParticles();
 
   /* ============ SMOOTH SCROLL + SCROLLTRIGGER ============ */
@@ -7144,7 +7195,12 @@
   }
   document.getElementById('tnext').addEventListener('click', () => showTestimonial((tIdx + 1) % testimonials.length));
   document.getElementById('tprev').addEventListener('click', () => showTestimonial((tIdx - 1 + testimonials.length) % testimonials.length));
-  setInterval(() => showTestimonial((tIdx + 1) % testimonials.length), 7000);
+  // Auto-rotate testimonials every 7s — but only when the user hasn't
+  // requested reduced motion. In reduced-motion mode the user still has
+  // the prev/next buttons + dots to navigate.
+  if (!prefersReduced) {
+    setInterval(() => showTestimonial((tIdx + 1) % testimonials.length), 7000);
+  }
 
   /* ============ TERMINAL ============ */
   const termBody = document.getElementById('terminalBody');
@@ -7185,6 +7241,20 @@
   }
   async function typeTerminal() {
     termBody.innerHTML = '';
+    // If reduced motion, render all lines instantly instead of typing them.
+    if (prefersReduced) {
+      termLines.forEach(l => {
+        const line = document.createElement('div'); line.className = 't-line';
+        if (l.t === 'prompt') line.innerHTML = '<span class="t-prompt">➜  </span>';
+        const span = document.createElement('span');
+        if (l.t === 'comment') span.className = 't-comment';
+        if (l.t === 'output') span.className = 't-output';
+        span.textContent = l.s;
+        line.appendChild(span);
+        termBody.appendChild(line);
+      });
+      return;
+    }
     for (const l of termLines) {
       await typeLine(l, termBody);
       await new Promise(r => setTimeout(r, l.t === 'comment' ? 300 : 150));
